@@ -71,7 +71,11 @@ export default class CreatePost extends Component {
           temporaryFileReader.onload = () => {
             resolve(temporaryFileReader.result);
           };
-          temporaryFileReader.readAsDataURL(inputFile);
+          if (inputFile.name.split(".")[1] !== "csv"){
+            temporaryFileReader.readAsDataURL(inputFile);
+          }else{
+            resolve(inputFile.name)
+          }
         });
       };
       var binaryFile = await readUploadedFileAsText(e.target.files[0]).then((response) => {
@@ -81,7 +85,7 @@ export default class CreatePost extends Component {
         file: binaryFile
       });
   }
-
+  
   onSubmit(e) {
     e.preventDefault();
     const post = {

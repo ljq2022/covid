@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
+import LineChart from 'react-linechart'
 
 export default class EditPost extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ export default class EditPost extends Component {
           date: new Date(response.data.date),
           file: response.data.file
         })
+        
       })
     axios.get('http://localhost:5000/users/')
       .then(response => {

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Post = require('../models/post.model');
+const csv = require('csvtojson')
 
 router.route('/').get((req, res) => {
   Post.find()
@@ -11,23 +12,30 @@ router.route('/add').post((req, res) => {
   const username = req.body.username;
   const description = req.body.description;
   const date = Date.parse(req.body.date);
-  const file = req.body.file;
+  var file = req.body.file;
   const complete = req.body.complete
   const positive = null;
   const data = req.body.data;
   console.log(data);
-  const newPost = new Post({
-    username,
-    description,
-    date,
-    file,
-    complete,
-    positive,
-    data
-  });
-  newPost.save()
-  .then(() => res.json(newPost))
-  .catch(err => res.status(400).json('Error: ' + err));
+  console.log(__dirname + "/" + file)
+  const filePromise = data  === "PCR" ? csv().fromFile(__dirname + "/" + file) : Promise.resolve(file)
+
+  filePromise.then(function(finalFile){
+    file = finalFile
+    console.log(file)
+    const newPost = new Post({
+      username,
+      description,
+      date,
+      file,
+      complete,
+      positive,
+      data
+    });
+    newPost.save()
+    .then(() => res.json(newPost))
+    .catch(err => res.status(400).json('Error: ' + err));
+  })
 });
 
 router.route('/:id').get((req, res) => {
