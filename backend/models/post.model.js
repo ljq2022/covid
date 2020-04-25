@@ -9,7 +9,9 @@ const postSchema = new Schema({
   file: { type: String, required: true },
   complete: { type: Boolean, required: true},
   positive: { type: Boolean},
-  data: { type: String, required: true}
+  data: { type: String, required: true},
+  height: { type: Number },
+  width: { type: Number }
 }, {
   timestamps: true,
 });

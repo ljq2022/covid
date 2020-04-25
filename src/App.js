@@ -8,6 +8,7 @@ import PostList from "./components/post-list.component";
 import CreateUser from "./components/create-user.component";
 import CreatePost from "./components/create-post.component";
 import EditPost from "./components/edit-post.component"
+import Painterro from 'painterro'
 
 function App() {
   return (

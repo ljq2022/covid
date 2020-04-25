@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
+import Painterro from 'painterro'
 
 export default class EditPost extends Component {
   constructor(props) {
@@ -8,40 +9,44 @@ export default class EditPost extends Component {
     //ensures that the this called in the methods are the same this in the class
     this.onSubmit = this.onSubmit.bind(this);
     this.onChangeDiagnosis = this.onChangeDiagnosis.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
     //state is how you create vars in react
     this.state = {
       username: '',
       description: '',
       date: new Date(),
       file: '',
-      positive: false
+      positive: false,
+      loading: true,
+      width: 0,
+      height: 0,
+      beginX: 0,
+      beginY: 0,
     }
   }
   componentDidMount() {
-    console.log(this.props.match.params.id)
     axios.get('http://localhost:5000/posts/' + this.props.match.params.id)
       .then(response => {
-        console.log(response.data)
         this.setState({
           username: response.data.username,
           description: response.data.description,
           date: new Date(response.data.date),
-          file: response.data.file
+          file: response.data.file,
+          data: response.data.data
         })
-      })
-    axios.get('http://localhost:5000/users/')
-      .then(response => {
-        if (response.data.length > 0) {
+        if(this.state.data == 'Image') {
           this.setState({
-            users: response.data.map(user => user.username),
-          })
+            height: response.data.height,
+            width: response.data.width
+          });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      })
-
   }
+  onMouseDown(e) {
+    console.log(e.offsetX);
+    console.log(e.offsetY);
+  }
+
   onChangeDiagnosis(e) {
     var res = false;
     if(e.target.value == 'Positive') {
@@ -63,15 +68,29 @@ export default class EditPost extends Component {
       positive: this.state.positive
     }
 
-    console.log(post);
-
     axios.post('http://localhost:5000/posts/update/' + this.props.match.params.id, post)
       .then(res => console.log(res.data));
 
     window.location = '/';
   }
-
   render() {
+    if(this.state.data == 'Image') {
+      var canvas = this.refs.canvas;
+      var context = canvas.getContext('2d');
+      var imageObj = this.refs.image;
+      imageObj.onload = function() {
+        context.drawImage(imageObj, 0, 0);
+        // the rectangle
+        context.beginPath();
+        context.rect(0, 0, 250, 150);
+        context.closePath();
+
+        // the outline
+        context.lineWidth = 3;
+        context.strokeStyle = '#666666';
+        context.stroke();
+      };
+    }
     return (
     <div>
       <h3>Label Image</h3>
@@ -86,7 +105,10 @@ export default class EditPost extends Component {
           <label>Due Date: {String(this.state.date)}</label>
         </div>
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-          <img src={this.state.file} alt=""/>
+          <canvas ref="canvas" height={this.state.height}
+          width={this.state.width} onMouseDown={this.onMouseDown} onMouseMove={() => {console.log('penis')}}
+          />
+          <img ref="image" src={this.state.file} style={{display: 'none'}} />
         </div>
         <div>
           <label>Result: </label>

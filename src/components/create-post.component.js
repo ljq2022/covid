@@ -77,6 +77,30 @@ export default class CreatePost extends Component {
       var binaryFile = await readUploadedFileAsText(e.target.files[0]).then((response) => {
         return response;
       });
+      if(binaryFile.includes('image')) {
+        var height = 0;
+        var width = 0;
+        const addImageProcess = (src) => {
+          return new Promise((resolve, reject) => {
+            let img = new Image()
+            img.onload = () => {
+              height = img.naturalHeight;
+              width = img.naturalWidth;
+              resolve([height, width]);
+            }
+            img.onerror = reject
+            img.src = src
+          })
+        }
+        var dims = await addImageProcess(binaryFile).then((response) => {
+          return response;
+        });
+        console.log(dims);
+        this.setState({
+          height: dims[0],
+          width: dims[1]
+        })
+      }
       this.setState({
         file: binaryFile
       });
@@ -91,6 +115,10 @@ export default class CreatePost extends Component {
       file: this.state.file,
       complete: false,
       data: this.state.data
+    }
+    if(this.state.data == 'Image') {
+      post.height = this.state.height;
+      post.width = this.state.width;
     }
     console.log(post);
     axios.post('http://localhost:5000/posts/add', post)

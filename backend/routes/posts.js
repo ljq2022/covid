@@ -15,6 +15,12 @@ router.route('/add').post((req, res) => {
   const complete = req.body.complete
   const positive = null;
   const data = req.body.data;
+  var height = 0;
+  var width = 0;
+  if(data == 'Image') {
+    height = req.body.height;
+    width = req.body.width;
+  }
   console.log(data);
   const newPost = new Post({
     username,
@@ -23,7 +29,9 @@ router.route('/add').post((req, res) => {
     file,
     complete,
     positive,
-    data
+    data,
+    height,
+    width
   });
   newPost.save()
   .then(() => res.json(newPost))
