@@ -83,6 +83,7 @@ export default class PostList extends Component {
               <th>Description</th>
               <th>Date</th>
               <th>File</th>
+              <th>Type</th>
               <th>Actions</th>
             </tr>
           </thead>

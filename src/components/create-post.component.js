@@ -11,6 +11,7 @@ export default class CreatePost extends Component {
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onUploadFile = this.onUploadFile.bind(this);
+    this.onChangeData = this.onChangeData.bind(this);
     //state is how you create vars in react
     this.state = {
       username: '',
@@ -18,6 +19,7 @@ export default class CreatePost extends Component {
       date: new Date(),
       users: [],
       file: '',
+      data: 'Image'
     }
   }
   componentDidMount() {
@@ -46,7 +48,12 @@ export default class CreatePost extends Component {
       description: e.target.value
     })
   }
-
+  onChangeData(e) {
+    this.setState({
+      data: e.target.value
+    });
+    console.log(e.target.value);
+  }
   onChangeDate(date) {
     this.setState({
       date: date
@@ -82,18 +89,13 @@ export default class CreatePost extends Component {
       description: this.state.description,
       date: this.state.date,
       file: this.state.file,
-      complete: false
+      complete: false,
+      data: this.state.data
     }
     console.log(post);
     axios.post('http://localhost:5000/posts/add', post)
       .then(res => console.log(res.data));
-    this.setState({
-      username: '',
-      description: '',
-      date: new Date(),
-      users: [],
-      file: '',
-    })
+    window.location = '/';
   }
 
   render() {
@@ -138,7 +140,16 @@ export default class CreatePost extends Component {
           </div>
         </div>
         <div className="form-group">
-          <label>Image: </label>
+          <label>Data Type: </label>
+          <div>
+            <select onChange={this.onChangeData} defaultValue={'Image'}>
+              <option key='Image' value='Image'>CT-Scan</option>
+              <option key='PCR' value='PCR'>rtPCR</option>
+            </select>
+          </div>
+        </div>
+        <div className="form-group">
+          <label>File: </label>
           <div>
             <input type="file" className="form-control-file" onChange={this.onUploadFile}/>
           </div>

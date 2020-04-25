@@ -44,7 +44,6 @@ export default class EditPost extends Component {
   }
   onChangeDiagnosis(e) {
     var res = false;
-    console.log(e.target.value);
     if(e.target.value == 'Positive') {
       res = true;
     }

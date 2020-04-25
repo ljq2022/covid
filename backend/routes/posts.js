@@ -14,13 +14,16 @@ router.route('/add').post((req, res) => {
   const file = req.body.file;
   const complete = req.body.complete
   const positive = null;
+  const data = req.body.data;
+  console.log(data);
   const newPost = new Post({
     username,
     description,
     date,
     file,
     complete,
-    positive
+    positive,
+    data
   });
   newPost.save()
   .then(() => res.json(newPost))

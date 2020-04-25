@@ -8,7 +8,8 @@ const postSchema = new Schema({
   date: { type: Date, required: true },
   file: { type: String, required: true },
   complete: { type: Boolean, required: true},
-  positive: { type: Boolean}
+  positive: { type: Boolean},
+  data: { type: String, required: true}
 }, {
   timestamps: true,
 });
