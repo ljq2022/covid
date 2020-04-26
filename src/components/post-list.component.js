@@ -8,6 +8,7 @@ const Post = props => (
     <td>{props.post.description}</td>
     <td>{props.post.date.substring(0,10)}</td>
     <td><img src={props.post.file} alt="" width="40" height="40" /></td>
+    <td>{props.post.data}</td>
     <td>
       <Link to={"/edit/"+props.post._id}>label</Link> | <a href="#" onClick={() => { props.completePost(props.post._id) }}>mark complete</a>
       <br/>
@@ -66,8 +67,6 @@ export default class PostList extends Component {
 
   postList() {
     return this.state.posts.map(currentpost => {
-      console.log('POST LIST');
-      console.log(currentpost);
       return <Post post={currentpost} completePost={this.completePost} deletePost={this.deletePost} key={currentpost._id}/>;
     })
   }

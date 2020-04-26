@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-  assigner: { type: String, required: true},
   username: { type: String, required: true },
   description: { type: String, required: true },
   date: { type: Date, required: true },
@@ -12,7 +11,8 @@ const postSchema = new Schema({
   positive: { type: Boolean},
   data: { type: String, required: true},
   height: { type: Number },
-  width: { type: Number }
+  width: { type: Number },
+  boxes: { type: Array }
 }, {
   timestamps: true,
 });

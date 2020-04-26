@@ -109,7 +109,7 @@ export default class CreatePost extends Component {
         file: binaryFile
       });
   }
-  
+
   onSubmit(e) {
     e.preventDefault();
     const post = {

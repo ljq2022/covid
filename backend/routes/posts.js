@@ -65,9 +65,10 @@ router.route('/update/:id').post((req, res) => {
       post.username = req.body.username;
       post.description = req.body.description;
       post.date = Date.parse(req.body.date);
-      post.file = req.body.file
-      post.complete = req.body.complete
-      post.positive = req.body.positive
+      post.file = req.body.file;
+      post.complete = req.body.complete;
+      post.positive = req.body.positive;
+      post.boxes = req.body.boxes;
       post.save()
         .then(() => res.json(post))
         .catch(err => res.status(400).json('Error: ' + err));
