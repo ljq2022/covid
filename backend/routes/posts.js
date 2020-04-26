@@ -9,6 +9,7 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
+  const assigner = "Luke Qin";
   const username = req.body.username;
   const description = req.body.description;
   const date = Date.parse(req.body.date);
@@ -29,6 +30,7 @@ router.route('/add').post((req, res) => {
     file = data === "rtPCR" ? JSON.stringify(finalFile) : finalFile
 
     const newPost = new Post({
+      assigner,
       username,
       description,
       date,
@@ -51,6 +53,11 @@ router.route('/tasksAlreadyCompleted').get((req, res) => {
 });
 router.route('/tasksNotCompleted').get((req, res) => {
   Post.find({ complete: false })
+    .then(posts => res.json(posts))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+router.route('/tasksICreated').get((req, res) => {
+  Post.find({ username: "Luke" })
     .then(posts => res.json(posts))
     .catch(err => res.status(400).json('Error: ' + err));
 });
