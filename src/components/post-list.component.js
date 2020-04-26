@@ -29,6 +29,7 @@ export default class PostList extends Component {
     this.deletePost = this.deletePost.bind(this);
     this.filterPosts = this.filterPosts.bind(this)
     this.loadAllPosts = this.loadAllPosts.bind(this)
+    this.importContacts = this.importContacts.bind(this)
 
     this.state = {
       filteredPosts: [],
@@ -46,6 +47,14 @@ export default class PostList extends Component {
       .catch((error) => {
         console.log(error);
       })
+  }
+  importContacts(){
+    axios.get("http://localhost:5000/misc/importContacts").then(function(res){
+      console.log(res)
+      localStorage.setItem("contactsList", res)
+    }).catch(function(error){
+      console.log(error)
+    })
   }
   deletePost(id) {
     axios.delete('http://localhost:5000/posts/'+id)
@@ -135,6 +144,7 @@ export default class PostList extends Component {
     return (
       <div>
         <label style={{fontSize: 30, fontWeight: 600, textDecoration: "underline"}}>Posts</label>
+        <button onClick={this.importContacts} style={{borderWidth: 3, borderColor: "gray", marginLeft: 20, backgroundColor: "white", color: "gray", borderRadius: 10, fontFamily: "sans-serif", paddingLeft: 11, paddingRight: 11, paddingTop: 3, paddingBottom: 3}}>👥Import Contacts</button>
         <br/>
         <select ref="_filterSelection" onChange={this.filterPosts} defaultValue={'All Tasks'} style={{marginBottom: 8}}>
           <option value='All Tasks'>All Tasks</option>

@@ -29,7 +29,7 @@ export default class CreatePost extends Component {
         if (response.data.length > 0) {
           this.setState({
             users: response.data.map(user => user.username),
-            username: response.data[0].username
+            username: "Public"
           })
         }
       })
@@ -120,7 +120,7 @@ export default class CreatePost extends Component {
       complete: false,
       data: this.state.data
     }
-    if(this.state.data == 'CT-Scan') {
+    if(this.state.data === 'CT-Scan') {
       post.height = this.state.height;
       post.width = this.state.width;
     }
@@ -144,7 +144,9 @@ export default class CreatePost extends Component {
               required
               className="form-control"
               value={this.state.username}
-              onChange={this.onChangeUsername}>
+              onChange={this.onChangeUsername}
+              defaultValue="Public">
+                <option value='Public'>Public</option>
               {
                 this.state.users.map(function(user) {
                   return <option
@@ -153,7 +155,6 @@ export default class CreatePost extends Component {
                     </option>;
                 })
               }
-              <option value='Public'>Public</option>
           </select>
         </div>
         <div className="form-group">

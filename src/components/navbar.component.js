@@ -11,7 +11,7 @@ export default class Navbar extends Component {
         <Link to="/" style={{fontSize: 28, color: "rgb(255, 77, 77)", fontFamily: "sans-serif", fontWeight: 700}}>Name</Link>
         <Link to="/" className="navBarLink" style={{marginLeft: 40}}>Tasks</Link>
         <Link to="/create" className="navBarLink" style={{marginLeft: 40}}>Upload File</Link>
-        <Link to="/user" className="navBarLink" style={{marginLeft: 40}}>Sign Up</Link>
+        <Link to="/user" className="navBarLink" style={{marginLeft: 40}}>{localStorage.getItem("loggedInUsername") === "" ? "Sign Up" : "Log Out"}</Link>
       </nav>
     );
   }

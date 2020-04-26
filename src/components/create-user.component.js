@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom'
 
-export default class CreateUser extends Component {
+class CreateUser extends Component {
   constructor(props) {
     super(props);
 
@@ -11,6 +12,11 @@ export default class CreateUser extends Component {
     this.state = {
       username: ''
     }
+  }
+
+  componentDidMount(){
+    localStorage.setItem("loggedInUsername", this.state.username)
+    this.props.updateNavBar()
   }
 
   onChangeUsername(e) {
@@ -26,6 +32,9 @@ export default class CreateUser extends Component {
       username: this.state.username
     }
 
+    localStorage.setItem("loggedInUsername", this.state.username)
+    this.props.updateNavBar()
+
     console.log(user);
 
 
@@ -34,6 +43,8 @@ export default class CreateUser extends Component {
 
     this.setState({
       username: ''
+    }, () => {
+      this.props.history.push("/")
     })
   }
 
@@ -54,17 +65,18 @@ export default class CreateUser extends Component {
           </div>
           <div className="form-group">
             <label style={{fontFamily: "sans-serif"}}>Email: </label>
-            <input type="text"
+            <input type="email"
                 required
                 className="form-control"
                 placeholder="how should we reach you?" />
           </div>
           <div className="form-group">
             <label style={{fontFamily: "sans-serif"}}>Password: </label>
-            <input type="text"
+            <input type="password"
                 required
                 className="form-control"
-                placeholder="confidential info" />
+                placeholder="confidential info"
+                secure />
           </div>
           <div className="form-group">
             <input type="submit" value="🤝Sign Up" style={{backgroundColor: "white", borderWidth: 0, paddingLeft: 8, paddingRight: 8, paddingBottom: 3, paddingTop: 3, borderColor: "rgb(255, 77, 77)", color: "rgb(255, 77, 77)", fontWeight: 600, borderWidth: 3, borderRadius: 10, fontSize: 19}} />
@@ -74,3 +86,5 @@ export default class CreateUser extends Component {
     )
   }
 }
+
+export default withRouter(CreateUser)

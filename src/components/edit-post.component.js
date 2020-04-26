@@ -123,7 +123,6 @@ export default class EditPost extends Component {
     var res = [];
     for(var i = 0; i < this.state.boxes.length; i++) {
         var curr = this.state.boxes[i];
-        console.log('PENIS DICK BALLS');
         console.log(curr);
         res.push({index: i,
           x: curr.x,
@@ -254,9 +253,13 @@ export default class EditPost extends Component {
             </div>
           }
         </div>
-        <div>{this.state.data === "CT-Scan" ? this.boxTable(): <div />}</div>
+        <hr/>
+        <div>{this.state.data === "CT-Scan" && this.state.boxes.length > 0 ? this.boxTable(): <div />}</div>
+        {(this.state.data === "CT-Scan" && this.state.boxes.length === 0) &&
+          <label style={{paddingTop: 10}}>You have not drawn any boxes.</label>
+        }
         <div style={{marginTop: 7}}>
-          <label>Result:</label>{" "}
+          <label style={{fontWeight: 600}}>Result:</label>{" "}
           <select onChange={this.onChangeDiagnosis} defaultValue={'Negative'}>
             <option key='Positive' value='Positive'>Positive</option>
             <option key='Negative' value='Negative'>Negative</option>
