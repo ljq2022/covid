@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
-import Painterro from 'painterro'
+import LineChart from 'react-linechart'
 
 export default class EditPost extends Component {
   constructor(props) {
@@ -10,6 +10,7 @@ export default class EditPost extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onChangeDiagnosis = this.onChangeDiagnosis.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.draw = this.draw.bind(this);
     //state is how you create vars in react
     this.state = {
       username: '',
@@ -22,6 +23,7 @@ export default class EditPost extends Component {
       height: 0,
       beginX: 0,
       beginY: 0,
+      rect: {}
     }
   }
   componentDidMount() {
@@ -34,7 +36,7 @@ export default class EditPost extends Component {
           file: response.data.file,
           data: response.data.data
         })
-        if(this.state.data == 'Image') {
+        if(response.data.data == 'Image') {
           this.setState({
             height: response.data.height,
             width: response.data.width
@@ -43,10 +45,24 @@ export default class EditPost extends Component {
       })
   }
   onMouseDown(e) {
-    console.log(e.offsetX);
-    console.log(e.offsetY);
-  }
+    var canvas = this.refs.canvas;
+    let rect = canvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    var context = canvas.getContext('2d');
+    // the rectangle
+    context.beginPath();
+    context.rect(x, y, x, y);
+    context.closePath();
 
+    // the outline
+    context.lineWidth = 3;
+    context.strokeStyle = '#666666';
+    context.stroke();
+  }
+  onMouseMove(e) {
+
+  }
   onChangeDiagnosis(e) {
     var res = false;
     if(e.target.value == 'Positive') {
@@ -73,24 +89,18 @@ export default class EditPost extends Component {
 
     window.location = '/';
   }
-  render() {
+  draw(startX, startY, drawing) {
     if(this.state.data == 'Image') {
       var canvas = this.refs.canvas;
       var context = canvas.getContext('2d');
       var imageObj = this.refs.image;
       imageObj.onload = function() {
         context.drawImage(imageObj, 0, 0);
-        // the rectangle
-        context.beginPath();
-        context.rect(0, 0, 250, 150);
-        context.closePath();
-
-        // the outline
-        context.lineWidth = 3;
-        context.strokeStyle = '#666666';
-        context.stroke();
       };
     }
+  }
+  render() {
+    this.draw()
     return (
     <div>
       <h3>Label Image</h3>
