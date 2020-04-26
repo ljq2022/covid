@@ -12,7 +12,8 @@ const postSchema = new Schema({
   data: { type: String, required: true},
   height: { type: Number },
   width: { type: Number },
-  boxes: { type: Array }
+  boxes: { type: Array },
+  public: { type: Boolean}
 }, {
   timestamps: true,
 });

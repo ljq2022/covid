@@ -99,7 +99,6 @@ export default class CreatePost extends Component {
         var dims = await addImageProcess(binaryFile).then((response) => {
           return response;
         });
-        console.log(dims);
         this.setState({
           height: dims[0],
           width: dims[1]
@@ -136,6 +135,9 @@ export default class CreatePost extends Component {
       <h3>Create New Post</h3>
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
+          <label>Assigner: Luke Qin</label>
+        </div>
+        <div className="form-group">
           <label>Username: </label>
           <select ref="userInput"
               required
@@ -150,6 +152,7 @@ export default class CreatePost extends Component {
                     </option>;
                 })
               }
+              <option value='Public'>Public</option>
           </select>
         </div>
         <div className="form-group">

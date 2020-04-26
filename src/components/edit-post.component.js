@@ -3,6 +3,17 @@ import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
+const Box = props => (
+  <tr>
+    <td>{props.box.index}</td>
+    <td>({props.box.x}, {props.box.y})</td>
+    <td>{props.box.height} x {props.box.width}</td>
+    <td>
+      <a href="#" onClick={() => { props.deletePost(props.box.index) }}>delete</a>
+    </td>
+  </tr>
+)
+
 export default class EditPost extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +26,7 @@ export default class EditPost extends Component {
     this.createGraphData = this.createGraphData.bind(this)
     this.findGraphKeys = this.findGraphKeys.bind(this)
     this.randomColor = this.randomColor.bind(this)
+    this.deleteBox = this.deleteBox.bind(this);
     //state is how you create vars in react
     this.state = {
       username: '',
@@ -30,7 +42,23 @@ export default class EditPost extends Component {
       boxes: []
     }
   }
-
+  async deleteBox(index) {
+    await this.setState({
+      boxes: this.state.boxes.filter(el => el.index !== index)
+    })
+    console.log(this.state.boxes);
+    this.draw()
+    // const post = {
+    //   username: this.state.username,
+    //   description: this.state.description,
+    //   date: this.state.date,
+    //   file: this.state.file,
+    //   complete: false,
+    //   data: this.state.data,
+    //   boxes: this.state.boxes
+    // }
+    // axios.post('http://localhost:5000/posts/'+id, post)
+  }
   createGraphData(jsonDataStr){
     var cleanedString = jsonDataStr.replace(/\'/gi,'')
     var jsonData = JSON.parse(cleanedString)
@@ -81,6 +109,8 @@ export default class EditPost extends Component {
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     var context = canvas.getContext('2d');
+    console.log(x);
+    console.log(y);
     this.setState({beginX: x, beginY: y});
   }
   async onMouseUp(e) {
@@ -92,13 +122,22 @@ export default class EditPost extends Component {
 
     var res = [];
     for(var i = 0; i < this.state.boxes.length; i++) {
-        res.push(this.state.boxes[i]);
+        var curr = this.state.boxes[i];
+        console.log('PENIS DICK BALLS');
+        console.log(curr);
+        res.push({index: i,
+          x: curr.x,
+          y: curr.y,
+          width: curr.width,
+          height: curr.height});
     }
-    res.push({x: this.state.beginX,
+    await res.push({index: this.state.boxes.length,
+      x: this.state.beginX,
       y: this.state.beginY,
       width: Math.abs(this.state.beginX - x),
       height: Math.abs(this.state.beginY - y)})
     await this.setState({boxes: res});
+    console.log(this.state.boxes);
     this.draw();
   };
   onChangeDiagnosis(e) {
@@ -133,8 +172,10 @@ export default class EditPost extends Component {
       var context = canvas.getContext('2d');
       var imageObj = this.refs.image;
       imageObj.onload = function() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(imageObj, 0, 0);
       };
+      imageObj.onload();
       for(var i = 0; i < this.state.boxes.length; i++) {
         var box = this.state.boxes[i];
         // the rectangle
@@ -148,6 +189,27 @@ export default class EditPost extends Component {
         context.stroke();
       }
     }
+  }
+  boxList() {
+    return this.state.boxes.map(currentbox => {
+      return <Box box={currentbox} deletePost={this.deleteBox} key={currentbox.index}/>;
+    })
+  }
+  boxTable() {
+    return (
+      <table className="table">
+        <thead className="thead-light">
+          <tr>
+            <th>Index</th>
+            <th>Coordinates</th>
+            <th>Dimensions</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>{ this.boxList() }
+      </tbody>
+    </table>
+    )
   }
   render() {
     this.draw()
@@ -192,6 +254,7 @@ export default class EditPost extends Component {
             </div>
           }
         </div>
+        <div>{this.state.data === "Image" ? this.boxTable(): <div />}</div>
         <div>
           <label>Result: </label>
           <select onChange={this.onChangeDiagnosis} defaultValue={'Negative'}>

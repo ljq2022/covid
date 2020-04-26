@@ -22,7 +22,7 @@ router.route('/add').post((req, res) => {
     height = req.body.height;
     width = req.body.width;
   }
-  
+
   const filePromise = data  === "PCR" ? csv().fromFile(__dirname + "/" + file) : Promise.resolve(file)
 
   filePromise.then(function(finalFile){
@@ -44,7 +44,16 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
   })
 });
-
+router.route('/tasksAlreadyCompleted').get((req, res) => {
+  Post.find({ complete: true })
+    .then(posts => res.json(posts))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+router.route('/tasksNotCompleted').get((req, res) => {
+  Post.find({ complete: false })
+    .then(posts => res.json(posts))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 router.route('/:id').get((req, res) => {
   Post.findById(req.params.id)
     .then(post => res.json(post))

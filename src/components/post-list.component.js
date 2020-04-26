@@ -28,7 +28,7 @@ export default class PostList extends Component {
     this.loadAllPosts = this.loadAllPosts.bind(this)
 
     this.state = {
-      filteredPosts: []
+      filteredPosts: [],
     };
   }
 
@@ -36,17 +36,21 @@ export default class PostList extends Component {
     this.filterPosts(this.refs._filterSelection)
   }
   loadAllPosts(){
-    axios.get("http://localhost:5000/posts").then(function(res){
-      this.setState({filteredPosts: res.data})
-    }.bind(this)).catch(function(error){
-      console.log(error)
-    })
+    axios.get('http://localhost:5000/posts/')
+      .then(response => {
+        this.setState({ filteredPosts: response.data })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
   deletePost(id) {
     axios.delete('http://localhost:5000/posts/'+id)
       .then(response => { console.log(response.data)});
 
-    this.filterPosts(this.refs._filterSelection.target.value)
+      this.setState({
+        filteredPosts: this.state.filteredPosts.filter(el => el._id !== id)
+      })
   }
   completePost(id) {
     var completedPost;
@@ -78,13 +82,13 @@ export default class PostList extends Component {
         this.loadAllPosts()
         break
 
-      case "Tasks Not Completed":
-        axios.get("http://localhost:5000/posts/tasksNotCompleted").then(function(res){
-          this.setState({filteredPosts: res.data})
-        }.bind(this)).catch(function(error){
-          console.log(error)
-        })
-        break
+        case "Tasks Not Completed":
+          axios.get("http://localhost:5000/posts/tasksNotCompleted").then(function(res){
+            this.setState({filteredPosts: res.data})
+          }.bind(this)).catch(function(error){
+            console.log(error)
+          })
+          break
 
       case "Tasks Already Completed":
         axios.get("http://localhost:5000/posts/tasksAlreadyCompleted").then(function(res){
@@ -95,25 +99,17 @@ export default class PostList extends Component {
         break
 
       case "Tasks I Created":
-        axios.get("http://localhost:5000/posts/tasksICreated").then(function(res){
-          this.setState({filteredPosts: res.data})
-        }.bind(this)).catch(function(error){
-          console.log(error)
-        })
+        this.loadAllPosts()
         break
 
       case "Public Tasks":
-        axios.get("http://localhost:5000/posts/publicTasks").then(function(res){
-          this.setState({filteredPosts: res.data})
-        }.bind(this)).catch(function(error){
-          console.log(error)
-        })
+        this.loadAllPosts()
         break
 
       default:
         break
     }
-   
+
   }
 
   postList() {
@@ -138,7 +134,7 @@ export default class PostList extends Component {
         <table className="table">
           <thead className="thead-light">
             <tr>
-              <th>Username</th>
+              <th>Assigner</th>
               <th>Description</th>
               <th>Date</th>
               <th>File</th>
