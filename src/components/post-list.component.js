@@ -110,7 +110,11 @@ export default class PostList extends Component {
         break
 
       case "Public Tasks":
-        this.loadAllPosts()
+        axios.get("http://localhost:5000/posts/public").then(function(res){
+          this.setState({filteredPosts: res.data})
+        }.bind(this)).catch(function(error){
+          console.log(error)
+        })
         break
 
       default:
