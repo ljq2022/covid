@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "react-datepicker/dist/react-datepicker.css";
-import LineChart from 'react-linechart'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export default class EditPost extends Component {
   constructor(props) {
@@ -11,6 +11,9 @@ export default class EditPost extends Component {
     this.onChangeDiagnosis = this.onChangeDiagnosis.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.draw = this.draw.bind(this);
+    this.createGraphData = this.createGraphData.bind(this)
+    this.findGraphKeys = this.findGraphKeys.bind(this)
+    this.randomColor = this.randomColor.bind(this)
     //state is how you create vars in react
     this.state = {
       username: '',
@@ -23,9 +26,35 @@ export default class EditPost extends Component {
       height: 0,
       beginX: 0,
       beginY: 0,
-      rect: {}
+      rect: {},
+      data: '',
+      lineKeys: []
     }
   }
+
+  createGraphData(jsonDataStr){
+    var cleanedString = jsonDataStr.replace(/\'/gi,'')
+    var jsonData = JSON.parse(cleanedString)
+    return jsonData
+  }
+
+  findGraphKeys(jsonDataStr){
+    var cleanedString = jsonDataStr.replace(/\'/gi,'')
+    var jsonData = JSON.parse(cleanedString)
+    var lineKeysTemp = []
+    for (var key of Object.keys(jsonData[0])){
+      lineKeysTemp.push(key)
+    }
+    return lineKeysTemp
+  }
+
+  randomColor(){
+    const red = Math.random() * 230
+    const green = Math.random() * 230
+    const blue = Math.random() * 230
+    return "rgb(" + red + "," + green + "," + blue + ")"
+  }
+
   componentDidMount() {
     axios.get('http://localhost:5000/posts/' + this.props.match.params.id)
       .then(response => {
@@ -34,7 +63,8 @@ export default class EditPost extends Component {
           description: response.data.description,
           date: new Date(response.data.date),
           file: response.data.file,
-          data: response.data.data
+          data: response.data.data,
+          lineKeys: response.data.data === "PCR" ? this.findGraphKeys(response.data.file) : []
         })
         if(response.data.data == 'Image') {
           this.setState({
@@ -115,10 +145,32 @@ export default class EditPost extends Component {
           <label>Due Date: {String(this.state.date)}</label>
         </div>
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-          <canvas ref="canvas" height={this.state.height}
-          width={this.state.width} onMouseDown={this.onMouseDown} onMouseMove={() => {console.log('penis')}}
-          />
-          <img ref="image" src={this.state.file} style={{display: 'none'}} />
+          {this.state.data === "PCR" ?
+            <LineChart 
+              width={500} 
+              height={300} 
+              data={this.createGraphData(this.state.file)}
+              margin={{
+                top: 5, right: 30, left: 20, bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis domain={[0,45]}/>
+              <Tooltip />
+              <Legend />
+              {this.state.lineKeys.map(label => 
+                <Line key={label} type="monotone" dataKey={label} stroke={label === "Water" ? "rgb(20,20,20)" : this.randomColor()} />
+              )}
+            </LineChart>
+          :
+            <div>
+              <canvas ref="canvas" height={this.state.height}
+                width={this.state.width} onMouseDown={this.onMouseDown} onMouseMove={() => {console.log('penis')}}
+              />
+              <img ref="image" src={this.state.file} style={{display: 'none'}} />
+            </div>
+          }
         </div>
         <div>
           <label>Result: </label>

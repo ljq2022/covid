@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "canvasjs": "^1.8.3",
     "convert-csv-to-json": "0.0.15",
     "convert-excel-to-json": "^1.6.1",
     "csvtojson": "^2.0.10",
@@ -17,12 +18,14 @@
     "painterro": "^1.0.35",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
+    "react-charts": "^2.0.0-beta.6",
     "react-datepicker": "^2.14.1",
     "react-dom": "^16.13.1",
     "react-linechart": "^1.1.12",
     "react-moment": "^0.9.7",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "recharts": "^1.8.5"
   },
   "scripts": {
     "start": "react-scripts start",
