@@ -6,17 +6,14 @@ export default class Navbar extends Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link to="/" className="navbar-brand">Luke's Blog!</Link>
+        <img style={{marginRight: ".75em"}} width={'150px'} height={'150px'} src="https://www.freelogodesign.org/file/app/client/thumb/d6105bd8-530c-473d-bff5-462413216ddf_200x200.png?1587883805222" />
         <div className="collpase navbar-collapse">
         <ul className="navbar-nav mr-auto">
           <li className="navbar-item">
-          <Link to="/" className="nav-link">Posts</Link>
+          <Link to="/" className="nav-link" style={{fontSize:"30px", marginLeft: ".75em", marginRight: ".75em"}}>Tasks</Link>
           </li>
           <li className="navbar-item">
-          <Link to="/create" className="nav-link">Create Post</Link>
-          </li>
-          <li className="navbar-item">
-          <Link to="/user" className="nav-link">Create User</Link>
+          <Link to="/create" className="nav-link" style={{fontSize:"30px", marginLeft: ".75em", marginRight: ".75em"}}>Create Task</Link>
           </li>
         </ul>
         </div>
