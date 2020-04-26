@@ -24,33 +24,28 @@ export default class PostList extends Component {
 
     this.completePost = this.completePost.bind(this)
     this.deletePost = this.deletePost.bind(this);
+    this.filterPosts = this.filterPosts.bind(this)
 
-    this.state = {posts: []};
+    this.state = {
+      filteredPosts: []
+    };
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/posts/')
-      .then(response => {
-        this.setState({ posts: response.data })
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    this.filterPosts(this.refs._filterSelection.target == null ? "" : this.refs._filterSelection.target.value)
   }
   deletePost(id) {
     axios.delete('http://localhost:5000/posts/'+id)
       .then(response => { console.log(response.data)});
 
-    this.setState({
-      posts: this.state.posts.filter(el => el._id !== id)
-    })
+    this.filterPosts(this.refs._filterSelection.target.value)
   }
   completePost(id) {
     var completedPost;
-    for(var i = 0; i < this.state.posts.length; i++) {
-      if(this.state.posts[i]._id === id) {
-        completedPost = this.state.posts[i];
-        this.state.posts[i].complete = true;
+    for(var i = 0; i < this.state.filteredPosts.length; i++) {
+      if(this.state.filteredPosts[i]._id === id) {
+        completedPost = this.state.filteredPosts[i];
+        this.state.filteredPosts[i].complete = true;
         break;
       }
     }
@@ -65,8 +60,58 @@ export default class PostList extends Component {
       .then(response => { console.log(response.data)});
   }
 
+  filterPosts(pickerSelectionValue){
+    switch(pickerSelectionValue){
+      case "All Tasks":
+        axios.get("http://localhost:5000/posts").then(function(res){
+          this.setState({filteredPosts: res.data})
+        }.bind(this)).catch(function(error){
+          console.log(error)
+        })
+        break
+
+      case "Tasks Not Completed":
+        axios.get("http://localhost:5000/posts/tasksNotCompleted").then(function(res){
+          this.setState({filteredPosts: res.data})
+        }.bind(this)).catch(function(error){
+          console.log(error)
+        })
+        break
+
+      case "Tasks Already Completed":
+        axios.get("http://localhost:5000/posts/tasksAlreadyCompleted").then(function(res){
+          this.setState({filteredPosts: res.data})
+        }.bind(this)).catch(function(error){
+          console.log(error)
+        })
+        break
+
+      case "Tasks I Created":
+        axios.get("http://localhost:5000/posts/tasksICreated").then(function(res){
+          this.setState({filteredPosts: res.data})
+        }.bind(this)).catch(function(error){
+          console.log(error)
+        })
+        break
+
+      case "Public Tasks":
+        axios.get("http://localhost:5000/posts/publicTasks").then(function(res){
+          this.setState({filteredPosts: res.data})
+        }.bind(this)).catch(function(error){
+          console.log(error)
+        })
+        break
+
+      default:
+        break
+    }
+   
+  }
+
   postList() {
-    return this.state.posts.map(currentpost => {
+    return this.state.filteredPosts.map(currentpost => {
+      console.log('POST LIST');
+      console.log(currentpost);
       return <Post post={currentpost} completePost={this.completePost} deletePost={this.deletePost} key={currentpost._id}/>;
     })
   }
@@ -75,6 +120,13 @@ export default class PostList extends Component {
     return (
       <div>
         <h3>Posts</h3>
+        <select ref="_filterSelection" onChange={this.filterPosts} defaultValue={'All Tasks'}>
+          <option value='All Tasks'>All Tasks</option>
+          <option value='Tasks Not Completed'>Tasks Not Completed</option>
+          <option value='Tasks Already Completed'>Tasks Already Completed</option>
+          <option value='Tasks I Created'>Tasks I Created</option>
+          <option value='Public Tasks'>Public Tasks</option>
+        </select>
         <table className="table">
           <thead className="thead-light">
             <tr>
