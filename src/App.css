@@ -40,3 +40,27 @@
 .hidden {
   display: none;
 }
+
+.postRowActionDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left; 
+  text-align: left;
+  font-size: medium;
+  font-weight: 600;  
+  font-family: sans-serif;   
+}
+
+.navBarLink {
+  font-size: 19;
+  color: rgb(104, 104, 104);
+  font-family: sans-serif;
+  font-weight: 600;
+}
+
+.newPostHeadings{
+  font-family: sans-serif;
+  font-weight: 500;
+  color: rgb(104, 104, 104)
+}

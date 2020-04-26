@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import "../App.css"
 
 const Post = props => (
-  <tr>
-    <td>{props.post.username}</td>
+  <tr style={{fontFamily: "sans-serif"}}>
+    <td style={{fontWeight: 600}}>{props.post.username}</td>
     <td>{props.post.description}</td>
     <td>{props.post.date.substring(0,10)}</td>
     <td><img src={props.post.file} alt="" width="40" height="40" /></td>
     <td>{props.post.data}</td>
     <td>
-      <Link to={"/edit/"+props.post._id}>label</Link> | <a href="#" onClick={() => { props.completePost(props.post._id) }}>mark complete</a>
-      <br/>
-      <a href="#" onClick={() => { props.deletePost(props.post._id) }}>delete</a>
+      <div className="postRowActionDiv">
+        <Link to={"/edit/"+props.post._id} style={{color: "rgb(255, 77, 77)"}}>✏️label</Link>
+        <a href="#" onClick={() => { props.completePost(props.post._id) }} style={{color: "gray"}}>✅mark complete</a>
+        <a href="#" onClick={() => { props.deletePost(props.post._id) }} style={{color: "gray"}}>🗑️delete</a>
+      </div>
     </td>
   </tr>
 )
@@ -123,8 +126,9 @@ export default class PostList extends Component {
   render() {
     return (
       <div>
-        <h3>Posts</h3>
-        <select ref="_filterSelection" onChange={this.filterPosts} defaultValue={'All Tasks'}>
+        <label style={{fontSize: 30, fontWeight: 600, textDecoration: "underline"}}>Posts</label>
+        <br/>
+        <select ref="_filterSelection" onChange={this.filterPosts} defaultValue={'All Tasks'} style={{marginBottom: 8}}>
           <option value='All Tasks'>All Tasks</option>
           <option value='Tasks Not Completed'>Tasks Not Completed</option>
           <option value='Tasks Already Completed'>Tasks Already Completed</option>

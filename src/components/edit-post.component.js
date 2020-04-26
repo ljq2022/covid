@@ -214,14 +214,14 @@ export default class EditPost extends Component {
   render() {
     this.draw()
     return (
-    <div>
-      <h3>Label Image</h3>
+    <div style={{fontFamily: "sans-serif"}}>
+      <label style={{fontSize: 30, fontWeight: 600, textDecoration: "underline"}}>Label this image</label>
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
-          <label>{this.state.username}'s Task</label>
+          <label style={{fontSize: 20, color: "gray"}}>Task created by {this.state.username}</label>
         </div>
-        <div className="form-group">
-          <p>Instructions: {this.state.description}</p>
+        <div className="form-group" style={{marginBottom: -6}}>
+          <p>Description: {this.state.description}</p>
         </div>
         <div className="form-group">
           <label>Due Date: {String(this.state.date)}</label>
@@ -255,15 +255,15 @@ export default class EditPost extends Component {
           }
         </div>
         <div>{this.state.data === "Image" ? this.boxTable(): <div />}</div>
-        <div>
-          <label>Result: </label>
+        <div style={{marginTop: 7}}>
+          <label>Result:</label>{" "}
           <select onChange={this.onChangeDiagnosis} defaultValue={'Negative'}>
             <option key='Positive' value='Positive'>Positive</option>
             <option key='Negative' value='Negative'>Negative</option>
           </select>
         </div>
-        <div className="form-group">
-          <input type="submit" value="Submit Task" className="btn btn-primary" />
+        <div className="form-group" style={{marginTop: 23}}>
+          <input type="submit" value="🤘Submit Task" style={{backgroundColor: "white", borderWidth: 0, paddingLeft: 8, paddingRight: 8, paddingBottom: 3, paddingTop: 3, borderColor: "rgb(255, 77, 77)", color: "rgb(255, 77, 77)", fontWeight: 600, borderWidth: 3, borderRadius: 10, fontSize: 19}} />
         </div>
       </form>
     </div>

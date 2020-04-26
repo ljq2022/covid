@@ -13,8 +13,9 @@ import Painterro from 'painterro'
 function App() {
   return (
     <Router>
-      <div className="container">
+      <div style={{marginLeft: 35, marginRight: 35, marginTop: 20}}>
         <Navbar />
+        <hr />
         <Route path="/" exact component={PostList} />
         <Route path="/create" component={CreatePost} />
         <Route path="/user" component={CreateUser} />

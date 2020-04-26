@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import "../App.css"
 export default class CreatePost extends Component {
   constructor(props) {
     super(props);
@@ -132,13 +133,13 @@ export default class CreatePost extends Component {
   render() {
     return (
     <div>
-      <h3>Create New Post</h3>
+      <label style={{fontSize: 30, fontWeight: 600, textDecoration: "underline"}}>Create New Post</label>
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
           <label>Assigner: Luke Qin</label>
         </div>
         <div className="form-group">
-          <label>Username: </label>
+          <label className="newPostHeadings">Username: </label>
           <select ref="userInput"
               required
               className="form-control"
@@ -156,16 +157,17 @@ export default class CreatePost extends Component {
           </select>
         </div>
         <div className="form-group">
-          <label>Description: </label>
+          <label className="newPostHeadings">Description: </label>
           <textarea type="text"
               required
               className="form-control"
               value={this.state.description}
               onChange={this.onChangeDescription}
+              placeholder="What should someone know about this file?"
               />
         </div>
         <div className="form-group">
-          <label>Date: </label>
+          <label className="newPostHeadings">Date: </label>
           <div>
             <DatePicker
               selected={this.state.date}
@@ -175,7 +177,7 @@ export default class CreatePost extends Component {
           </div>
         </div>
         <div className="form-group">
-          <label>Data Type: </label>
+          <label className="newPostHeadings">Data Type: </label>
           <div>
             <select onChange={this.onChangeData} defaultValue={'Image'}>
               <option key='Image' value='Image'>CT-Scan</option>
@@ -184,13 +186,13 @@ export default class CreatePost extends Component {
           </div>
         </div>
         <div className="form-group">
-          <label>File: </label>
-          <div>
+          <label className="newPostHeadings">File: </label>
+          <div style={{fontWeight: 550}}>
             <input type="file" className="form-control-file" onChange={this.onUploadFile}/>
           </div>
         </div>
         <div className="form-group">
-          <input type="submit" value="Create Post" className="btn btn-primary" />
+          <input type="submit" value="🙌 Create Post" style={{backgroundColor: "white", borderWidth: 0, paddingLeft: 8, paddingRight: 8, paddingBottom: 3, paddingTop: 3, borderColor: "rgb(255, 77, 77)", color: "rgb(255, 77, 77)", fontWeight: 600, borderWidth: 3, borderRadius: 10, fontSize: 19}} />
         </div>
       </form>
     </div>
