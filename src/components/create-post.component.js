@@ -20,7 +20,7 @@ export default class CreatePost extends Component {
       date: new Date(),
       users: [],
       file: '',
-      data: 'Image'
+      data: 'CT-Scan'
     }
   }
   componentDidMount() {
@@ -120,7 +120,7 @@ export default class CreatePost extends Component {
       complete: false,
       data: this.state.data
     }
-    if(this.state.data == 'Image') {
+    if(this.state.data == 'CT-Scan') {
       post.height = this.state.height;
       post.width = this.state.width;
     }
@@ -179,9 +179,9 @@ export default class CreatePost extends Component {
         <div className="form-group">
           <label className="newPostHeadings">Data Type: </label>
           <div>
-            <select onChange={this.onChangeData} defaultValue={'Image'}>
-              <option key='Image' value='Image'>CT-Scan</option>
-              <option key='PCR' value='PCR'>rtPCR</option>
+            <select onChange={this.onChangeData} defaultValue={'CT-Scan'}>
+              <option key='CT-Scan' value='CT-Scan'>CT-Scan</option>
+              <option key='rtPCR' value='rtPCR'>rtPCR</option>
             </select>
           </div>
         </div>

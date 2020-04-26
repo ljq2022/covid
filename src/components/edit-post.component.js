@@ -91,10 +91,10 @@ export default class EditPost extends Component {
           date: new Date(response.data.date),
           file: response.data.file,
           data: response.data.data,
-          lineKeys: response.data.data === "PCR" ? this.findGraphKeys(response.data.file) : [],
+          lineKeys: response.data.data === "rtPCR" ? this.findGraphKeys(response.data.file) : [],
           boxes: response.data.boxes
         })
-        if(response.data.data == 'Image') {
+        if(response.data.data == 'CT-Scan') {
           this.setState({
             height: response.data.height,
             width: response.data.width
@@ -227,7 +227,7 @@ export default class EditPost extends Component {
           <label>Due Date: {String(this.state.date)}</label>
         </div>
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-          {this.state.data === "PCR" ?
+          {this.state.data === "rtPCR" ?
             <LineChart
               width={500}
               height={300}
@@ -254,7 +254,7 @@ export default class EditPost extends Component {
             </div>
           }
         </div>
-        <div>{this.state.data === "Image" ? this.boxTable(): <div />}</div>
+        <div>{this.state.data === "CT-Scan" ? this.boxTable(): <div />}</div>
         <div style={{marginTop: 7}}>
           <label>Result:</label>{" "}
           <select onChange={this.onChangeDiagnosis} defaultValue={'Negative'}>

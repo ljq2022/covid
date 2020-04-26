@@ -23,10 +23,10 @@ router.route('/add').post((req, res) => {
     width = req.body.width;
   }
 
-  const filePromise = data  === "PCR" ? csv().fromFile(__dirname + "/" + file) : Promise.resolve(file)
+  const filePromise = data  === "rtPCR" ? csv().fromFile(__dirname + "/" + file) : Promise.resolve(file)
 
   filePromise.then(function(finalFile){
-    file = data === "PCR" ? JSON.stringify(finalFile) : finalFile
+    file = data === "rtPCR" ? JSON.stringify(finalFile) : finalFile
 
     const newPost = new Post({
       username,
