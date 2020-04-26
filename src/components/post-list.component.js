@@ -25,6 +25,7 @@ export default class PostList extends Component {
     this.completePost = this.completePost.bind(this)
     this.deletePost = this.deletePost.bind(this);
     this.filterPosts = this.filterPosts.bind(this)
+    this.loadAllPosts = this.loadAllPosts.bind(this)
 
     this.state = {
       filteredPosts: []
@@ -32,7 +33,14 @@ export default class PostList extends Component {
   }
 
   componentDidMount() {
-    this.filterPosts(this.refs._filterSelection.target == null ? "" : this.refs._filterSelection.target.value)
+    this.filterPosts(this.refs._filterSelection)
+  }
+  loadAllPosts(){
+    axios.get("http://localhost:5000/posts").then(function(res){
+      this.setState({filteredPosts: res.data})
+    }.bind(this)).catch(function(error){
+      console.log(error)
+    })
   }
   deletePost(id) {
     axios.delete('http://localhost:5000/posts/'+id)
@@ -60,14 +68,14 @@ export default class PostList extends Component {
       .then(response => { console.log(response.data)});
   }
 
-  filterPosts(pickerSelectionValue){
-    switch(pickerSelectionValue){
+  filterPosts(pickerSelection){
+    if (pickerSelection.target == null){
+      this.loadAllPosts()
+      return
+    }
+    switch(pickerSelection.target.value){
       case "All Tasks":
-        axios.get("http://localhost:5000/posts").then(function(res){
-          this.setState({filteredPosts: res.data})
-        }.bind(this)).catch(function(error){
-          console.log(error)
-        })
+        this.loadAllPosts()
         break
 
       case "Tasks Not Completed":
