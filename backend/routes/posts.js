@@ -18,7 +18,7 @@ router.route('/add').post((req, res) => {
   const data = req.body.data;
   var height = 0;
   var width = 0;
-  if(data == 'Image') {
+  if(data === 'CT-Scan') {
     height = req.body.height;
     width = req.body.width;
   }

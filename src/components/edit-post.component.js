@@ -167,7 +167,7 @@ export default class EditPost extends Component {
     window.location = '/';
   }
   draw() {
-    if(this.state.data == 'Image') {
+    if(this.state.data === 'CT-Scan') {
       var canvas = this.refs.canvas;
       var context = canvas.getContext('2d');
       var imageObj = this.refs.image;
